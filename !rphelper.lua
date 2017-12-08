@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("2.0")
+script_version("2.3")
 script_author("rubbishman")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 --------------------------------------VAR---------------------------------------
@@ -20,6 +20,8 @@ local settings = inicfg.load({
 	{
 		startmessage = true,
 		hideseeme = true,
+		autoupdate = true,
+		hideseemeKD = true,
 	},
 	time =
 	{
@@ -61,13 +63,15 @@ local settings = inicfg.load({
 function main()
 	if not isSampfuncsLoaded() or not isSampLoaded() then return end
 	while not isSampAvailable() do wait(100) end
-	update()
-	while update ~= false do wait(100) end
+	if settings.options.autoupdate == true then
+		update()
+		while update ~= false do wait(100) end
+	end
 	sampRegisterChatCommand("rphelper", scriptmenu)
 	if settings.options.startmessage then
 		sampAddChatMessage((thisScript().name..' v'..thisScript().version..' by rubbishman (он же James_Bond, он же Phil_Coulson) запущен.'),
-		0x348cb2)
-		sampAddChatMessage(('Подробнее - /rphelper. Отключить это сообщение можно в настройках.'), 0x348cb2)
+		color)
+		sampAddChatMessage(('Подробнее - /rphelper. Отключить это сообщение можно в настройках.'), color)
 	end
 	menuupdate()
 	while true do
@@ -136,6 +140,7 @@ function sampev.onServerMessage(color, text)
 		end
 	end
 	if settings.options.hideseeme and text == " (( Сообщение отправлено ))" then return false end
+	if settings.options.hideseemeKD and text == " Эту команду можно использовать не более 3 раз в 30 секунд" then return false end
 end
 --------------------------------------------------------------------------------
 -------------------------------------MENU---------------------------------------
@@ -172,6 +177,33 @@ function menuupdate()
 						inicfg.save(settings, 'rphelper.ini')
 					end
 				},
+				{
+					title = string.format("{348cb2}Скрывать \"Эту команду можно использовать не более 3 раз в 30 секунд\": {ffffff}%s", settings.options.hideseemeKD),
+					onclick = function()
+						if settings.options.hideseemeKD == true then
+							settings.options.hideseemeKD = false
+						else
+							settings.options.hideseemeKD = true
+						end
+						menuupdate()
+						menu()
+						inicfg.save(settings, 'rphelper.ini')
+					end
+				},
+				{
+					title = string.format("{348cb2}Автообновление: {ffffff}%s", settings.options.autoupdate),
+					onclick = function()
+						if settings.options.autoupdate == true then
+							settings.options.autoupdate = false sampAddChatMessage(('[RPHELPER]: Автообновление RPHELPER выключено'), color)
+						else
+							settings.options.autoupdate = true sampAddChatMessage(('[RPHELPER]: Автообновление RPHELPER включено'), color)
+						end
+						menuupdate()
+						menu()
+						inicfg.save(settings, 'rphelper.ini')
+					end
+				},
+
 			}
 		},
 		{
@@ -355,6 +387,9 @@ function menuupdate()
 		},
 		{
 			title = ' ',
+		},
+		{
+			title = '{AAAAAA}Ссылки'
 		},
 		-- код директив ffi спизжен у FYP'a
 		{
