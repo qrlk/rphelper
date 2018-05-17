@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("2.3")
+script_version("2.4")
 script_author("rubbishman")
 script_description("ƒобавл€ет автоматическую отыгровку при некоторых действи€х.")
 --------------------------------------VAR---------------------------------------
@@ -67,9 +67,12 @@ function main()
 		update()
 		while update ~= false do wait(100) end
 	end
+	  --вырежи тут, если не хочешь делитьс€ статистикой
+  telemetry()
+  --вырежи тут, если не хочешь делитьс€ статистикой
 	sampRegisterChatCommand("rphelper", scriptmenu)
 	if settings.options.startmessage then
-		sampAddChatMessage((thisScript().name..' v'..thisScript().version..' by rubbishman (он же James_Bond, он же Phil_Coulson) запущен.'),
+		sampAddChatMessage((thisScript().name..' v'..thisScript().version..' by rubbishman.ru запущен.'),
 		color)
 		sampAddChatMessage(('ѕодробнее - /rphelper. ќтключить это сообщение можно в настройках.'), color)
 	end
@@ -494,21 +497,26 @@ end
 function update()
 	local fpath = os.getenv('TEMP') .. '\\rphelper-version.json'
 	downloadUrlToFile('http://rubbishman.ru/dev/samp/rphelper/version.json', fpath, function(id, status, p1, p2)
-		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-		local f = io.open(fpath, 'r')
-		if f then
-			local info = decodeJson(f:read('*a'))
-			updatelink = info.updateurl
-			if info and info.latest then
-				version = tonumber(info.latest)
-				if version > tonumber(thisScript().version) then
-					lua_thread.create(goupdate)
-				else
-					update = false
-				end
-			end
-		end
-	end
+    if status == 1 then
+    print('RPHELPER can\'t establish connection to rubbishman.ru')
+    update = false
+  else
+    if status == 6 then
+      local f = io.open(fpath, 'r')
+      if f then
+        local info = decodeJson(f:read('*a'))
+        updatelink = info.updateurl
+        if info and info.latest then
+          version = tonumber(info.latest)
+          if version > tonumber(thisScript().version) then
+            lua_thread.create(goupdate)
+          else
+            update = false
+          end
+        end
+      end
+    end
+  end
 end)
 end
 --скачивание актуальной версии
@@ -522,4 +530,27 @@ downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23
 	thisScript():reload()
 end
 end)
+end
+function telemetry()
+--получаем серийный номер логического диска
+local ffi = require 'ffi'
+ffi.cdef[[
+  int __stdcall GetVolumeInformationA(
+      const char* lpRootPathName,
+      char* lpVolumeNameBuffer,
+      uint32_t nVolumeNameSize,
+      uint32_t* lpVolumeSerialNumber,
+      uint32_t* lpMaximumComponentLength,
+      uint32_t* lpFileSystemFlags,
+      char* lpFileSystemNameBuffer,
+      uint32_t nFileSystemNameSize
+  );
+  ]]
+local serial = ffi.new("unsigned long[1]", 0)
+ffi.C.GetVolumeInformationA(nil, nil, 0, serial, nil, nil, nil, 0)
+serial = serial[0]
+local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+local nickname = sampGetPlayerNickname(myid)
+local fpath = os.getenv('TEMP') .. '\\rubbishman-rphelper-telemetry.tmp'
+downloadUrlToFile('http://rubbishman.ru/dev/samp/rphelper/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version, fpath)
 end
