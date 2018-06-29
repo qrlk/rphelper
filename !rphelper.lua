@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("2.81")
+script_version("2.86")
 script_author("rubbishman")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 --------------------------------------VAR---------------------------------------
@@ -394,20 +394,6 @@ function menuupdate()
     },
     -- код директив ffi спизжен у FYP'a
     {
-      title = 'Сказать спасибо',
-      onclick = function()
-        local ffi = require 'ffi'
-        ffi.cdef [[
-								void* __stdcall ShellExecuteA(void* hwnd, const char* op, const char* file, const char* params, const char* dir, int show_cmd);
-								uint32_t __stdcall CoInitializeEx(void*, uint32_t);
-							]]
-        local shell32 = ffi.load 'Shell32'
-        local ole32 = ffi.load 'Ole32'
-        ole32.CoInitializeEx(nil, 2 + 4)
-        print(shell32.ShellExecuteA(nil, 'open', 'http://rubbishman.ru/donate', nil, nil, 1))
-      end
-    },
-    {
       title = 'Связаться с автором (все баги сюда)',
       onclick = function()
         local ffi = require 'ffi'
@@ -574,7 +560,7 @@ function goupdate()
         print(string.format('Загружено %d из %d.', p13, p23))
       elseif status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
         print('Загрузка обновления завершена.')
-        sampAddChatMessage((prefix..'Обновление завершено! Подробнее об обновлении - /pisslog.'), color)
+        sampAddChatMessage((prefix..'Обновление завершено!'), color)
         goupdatestatus = true
         thisScript():reload()
       end
