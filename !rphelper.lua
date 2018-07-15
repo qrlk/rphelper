@@ -1,10 +1,11 @@
+--Больше скриптов от автора можно найти в группе ВК: http://vk.com/qrlk.mods
 --Больше скриптов от автора можно найти на сайте: http://www.rubbishman.ru/samp
 --------------------------------------------------------------------------------
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("2.86")
-script_author("rubbishman")
+script_version("2.9")
+script_author("qrlk")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 --------------------------------------VAR---------------------------------------
 --цвет строк, выводимых скриптом в чат
@@ -22,6 +23,7 @@ local settings = inicfg.load({
     startmessage = true,
     hideseeme = true,
     autoupdate = true,
+		showad = true,
     hideseemeKD = true,
   },
   time =
@@ -70,10 +72,18 @@ function main()
   end
   sampRegisterChatCommand("rphelper", scriptmenu)
   if settings.options.startmessage then
-    sampAddChatMessage((thisScript().name..' v'..thisScript().version..' by rubbishman.ru запущен.'),
+    sampAddChatMessage((thisScript().name..' v'..thisScript().version..' запущен. <> by qrlk.'),
     color)
     sampAddChatMessage(('Подробнее - /rphelper. Отключить это сообщение можно в настройках.'), color)
   end
+	if settings.options.showad == true then
+		sampAddChatMessage("[RPHELPER]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", -1)
+		sampAddChatMessage("[RPHELPER]: Подписавшись на неё, вы сможете получать новости об обновлениях,", -1)
+		sampAddChatMessage("[RPHELPER]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", -1)
+		sampAddChatMessage("[RPHELPER]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", -1)
+		settings.options.showad = false
+		inicfg.save(settings, 'rphelper.ini')
+	end
   menuupdate()
   while true do
     wait(0)
@@ -392,6 +402,20 @@ function menuupdate()
     {
       title = '{AAAAAA}Ссылки'
     },
+		{
+			title = 'Подписывайтесь на группу ВКонтакте!',
+			onclick = function()
+				local ffi = require 'ffi'
+				ffi.cdef [[
+								void* __stdcall ShellExecuteA(void* hwnd, const char* op, const char* file, const char* params, const char* dir, int show_cmd);
+								uint32_t __stdcall CoInitializeEx(void*, uint32_t);
+							]]
+				local shell32 = ffi.load 'Shell32'
+				local ole32 = ffi.load 'Ole32'
+				ole32.CoInitializeEx(nil, 2 + 4)
+				print(shell32.ShellExecuteA(nil, 'open', 'http://vk.com/qrlk.mods', nil, nil, 1))
+			end
+		},
     -- код директив ffi спизжен у FYP'a
     {
       title = 'Связаться с автором (все баги сюда)',
@@ -425,7 +449,7 @@ function menuupdate()
 end
 --/rphelper menu
 function menu()
-  submenus_show(mod_submenus_sa, '{348cb2}rphelper v'..thisScript().version..' by rubbishman', 'Выбрать', 'Закрыть', 'Назад')
+  submenus_show(mod_submenus_sa, '{348cb2}RPHELPER v'..thisScript().version..' by qrlk', 'Выбрать', 'Закрыть', 'Назад')
 end
 --toggle menu
 function scriptmenu()
