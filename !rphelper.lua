@@ -4,7 +4,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("2.9")
+script_version("2.95")
 script_author("qrlk")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 --------------------------------------VAR---------------------------------------
@@ -23,7 +23,7 @@ local settings = inicfg.load({
     startmessage = true,
     hideseeme = true,
     autoupdate = true,
-		showad = true,
+    showad = true,
     hideseemeKD = true,
   },
   time =
@@ -44,7 +44,7 @@ local settings = inicfg.load({
   carlock =
   {
     enable = true,
-    text = "/seeme отключил сигнализацию транспорта",
+    text = "/seeme достал брелок$$/seeme отключил сигнализацию транспорта",
   },
   carunlock =
   {
@@ -76,14 +76,14 @@ function main()
     color)
     sampAddChatMessage(('Подробнее - /rphelper. Отключить это сообщение можно в настройках.'), color)
   end
-	if settings.options.showad == true then
-		sampAddChatMessage("[RPHELPER]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", -1)
-		sampAddChatMessage("[RPHELPER]: Подписавшись на неё, вы сможете получать новости об обновлениях,", -1)
-		sampAddChatMessage("[RPHELPER]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", -1)
-		sampAddChatMessage("[RPHELPER]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", -1)
-		settings.options.showad = false
-		inicfg.save(settings, 'rphelper.ini')
-	end
+  if settings.options.showad == true then
+    sampAddChatMessage("[RPHELPER]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
+    sampAddChatMessage("[RPHELPER]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
+    sampAddChatMessage("[RPHELPER]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
+    sampAddChatMessage("[RPHELPER]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
+    settings.options.showad = false
+    inicfg.save(settings, 'rphelper.ini')
+  end
   menuupdate()
   while true do
     wait(0)
@@ -91,35 +91,77 @@ function main()
     if settings.time.enable and ActiveTIME then
       wait(1300)
       if sampIsChatInputActive() == false and sampIsDialogActive() == false then
-        sampSendChat(settings.time.text)
+        if sampIsChatInputActive() == false and sampIsDialogActive() == false then
+          if string.find(settings.time.text, "$$", 1, true) then
+            for k, v in string.gmatch(settings.time.text, "(.+)$$(.+)") do
+              sampSendChat(k)
+              wait(1500)
+              sampSendChat(v)
+            end
+          else
+            sampSendChat(settings.time.text)
+          end
+        end
       end
       ActiveTIME = false
     end
     if settings.sms.enable and ActiveSMSIN then
       wait(1300)
       if sampIsChatInputActive() == false and sampIsDialogActive() == false then
-        sampSendChat(settings.sms.text)
+        if string.find(settings.sms.text, "$$", 1, true) then
+          for k, v in string.gmatch(settings.sms.text, "(.+)$$(.+)") do
+            sampSendChat(k)
+            wait(1500)
+            sampSendChat(v)
+          end
+        else
+          sampSendChat(settings.sms.text)
+        end
       end
       ActiveSMSIN = false
     end
     if settings.smsout.enable and ActiveSMSOUT then
       wait(1300)
       if sampIsChatInputActive() == false and sampIsDialogActive() == false then
-        sampSendChat(settings.smsout.text)
+        if string.find(settings.smsout.text, "$$", 1, true) then
+          for k, v in string.gmatch(settings.smsout.text, "(.+)$$(.+)") do
+            sampSendChat(k)
+            wait(1500)
+            sampSendChat(v)
+          end
+        else
+          sampSendChat(settings.smsout.text)
+        end
       end
       ActiveSMSOUT = false
     end
     if settings.carlock.enable and ACTIVELOCK then
       wait(1300)
       if sampIsChatInputActive() == false and sampIsDialogActive() == false then
-        sampSendChat(settings.carlock.text)
+        if string.find(settings.carlock.text, "$$", 1, true) then
+          for k, v in string.gmatch(settings.carlock.text, "(.+)$$(.+)") do
+            sampSendChat(k)
+            wait(1500)
+            sampSendChat(v)
+          end
+        else
+          sampSendChat(settings.carlock.text)
+        end
       end
       ACTIVELOCK = false
     end
     if settings.carunlock.enable and ACTIVEUNLOCK then
       wait(1300)
       if sampIsChatInputActive() == false and sampIsDialogActive() == false then
-        sampSendChat(settings.carunlock.text)
+        if string.find(settings.carunlock.text, "$$", 1, true) then
+          for k, v in string.gmatch(settings.carunlock.text, "(.+)$$(.+)") do
+            sampSendChat(k)
+            wait(1500)
+            sampSendChat(v)
+          end
+        else
+          sampSendChat(settings.carunlock.text)
+        end
       end
       ACTIVEUNLOCK = false
     end
@@ -402,20 +444,20 @@ function menuupdate()
     {
       title = '{AAAAAA}Ссылки'
     },
-		{
-			title = 'Подписывайтесь на группу ВКонтакте!',
-			onclick = function()
-				local ffi = require 'ffi'
-				ffi.cdef [[
+    {
+      title = 'Подписывайтесь на группу ВКонтакте!',
+      onclick = function()
+        local ffi = require 'ffi'
+        ffi.cdef [[
 								void* __stdcall ShellExecuteA(void* hwnd, const char* op, const char* file, const char* params, const char* dir, int show_cmd);
 								uint32_t __stdcall CoInitializeEx(void*, uint32_t);
 							]]
-				local shell32 = ffi.load 'Shell32'
-				local ole32 = ffi.load 'Ole32'
-				ole32.CoInitializeEx(nil, 2 + 4)
-				print(shell32.ShellExecuteA(nil, 'open', 'http://vk.com/qrlk.mods', nil, nil, 1))
-			end
-		},
+        local shell32 = ffi.load 'Shell32'
+        local ole32 = ffi.load 'Ole32'
+        ole32.CoInitializeEx(nil, 2 + 4)
+        print(shell32.ShellExecuteA(nil, 'open', 'http://vk.com/qrlk.mods', nil, nil, 1))
+      end
+    },
     -- код директив ffi спизжен у FYP'a
     {
       title = 'Связаться с автором (все баги сюда)',
