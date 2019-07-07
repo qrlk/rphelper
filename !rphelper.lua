@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("20.03.2019")
+script_version("07.07.2019")
 script_author("qrlk")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 --------------------------------------VAR---------------------------------------
@@ -469,7 +469,7 @@ function menuupdate()
         local shell32 = ffi.load 'Shell32'
         local ole32 = ffi.load 'Ole32'
         ole32.CoInitializeEx(nil, 2 + 4)
-        print(shell32.ShellExecuteA(nil, 'open', 'http://rubbishman.ru/sampcontact', nil, nil, 1))
+        print(shell32.ShellExecuteA(nil, 'open', 'http://qrlk.me/sampcontact', nil, nil, 1))
       end
     },
     {
@@ -483,7 +483,7 @@ function menuupdate()
         local shell32 = ffi.load 'Shell32'
         local ole32 = ffi.load 'Ole32'
         ole32.CoInitializeEx(nil, 2 + 4)
-        print(shell32.ShellExecuteA(nil, 'open', 'http://rubbishman.ru/samp/rphelper', nil, nil, 1))
+        print(shell32.ShellExecuteA(nil, 'open', 'http://qrlk.me/samp/rphelper', nil, nil, 1))
       end
     },
   }
