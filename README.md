@@ -23,7 +23,9 @@ It also requires **[CLEO 4+](http://cleo.li/?lang=ru)**, **[SAMPFUNCS 5+](https:
 ---
 
 **The following description is in Russian, because it is the main language of the user base**.
-
+<details>
+  <summary>Описание на русском языке.</summary>
+  
 # Описание 
 RPHELPER отправляет коротенькие отыгровочки при некоторых действиях.  
 Когда я играл на Samp-Rp, меня попросили написать простенький скрипт, который будет обыгрывать некоторые команды в игре.  
@@ -40,3 +42,4 @@ RPHELPER отправляет коротенькие отыгровочки пр
 ![https://i.imgur.com/wsId2UR.png](https://i.imgur.com/wsId2UR.png)  
 ![https://i.imgur.com/1q2xg7A.jpg?1](https://i.imgur.com/1q2xg7A.jpg?1)  
 ![https://i.imgur.com/e3608Xg.jpg?1](https://i.imgur.com/e3608Xg.jpg?1)  
+</details>
