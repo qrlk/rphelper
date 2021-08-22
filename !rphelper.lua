@@ -22,7 +22,6 @@ local settings = inicfg.load({
     startmessage = true,
     hideseeme = true,
     autoupdate = true,
-    showad = true,
     hideseemeKD = true,
   },
   time =
@@ -75,14 +74,7 @@ function main()
     color)
     sampAddChatMessage(('Подробнее - /rphelper. Отключить это сообщение можно в настройках.'), color)
   end
-  if settings.options.showad == true then
-    sampAddChatMessage("[RPHELPER]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
-    sampAddChatMessage("[RPHELPER]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
-    sampAddChatMessage("[RPHELPER]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
-    sampAddChatMessage("[RPHELPER]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
-    settings.options.showad = false
-    inicfg.save(settings, 'rphelper.ini')
-  end
+
   menuupdate()
   while true do
     wait(0)
