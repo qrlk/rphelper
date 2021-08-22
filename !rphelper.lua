@@ -65,10 +65,10 @@ local settings = inicfg.load({
 function main()
   if not isSampfuncsLoaded() or not isSampLoaded() then return end
   while not isSampAvailable() do wait(100) end
-	if settings.options.autoupdate == true then
-		update("http://qrlk.me/dev/moonloader/rphelper/stats.php", '['..string.upper(thisScript().name)..']: ', "http://vk.com/qrlk.mods", "rphelperchangelog")
-	end
-	openchangelog("rphelperchangelog", "http://qrlk.me/changelog/rphelper")
+  if settings.options.autoupdate == true then
+    update("http://qrlk.me/dev/moonloader/rphelper/stats.php", '['..string.upper(thisScript().name)..']: ', "http://vk.com/qrlk.mods", "rphelperchangelog")
+  end
+  openchangelog("rphelperchangelog", "http://qrlk.me/changelog/rphelper")
   sampRegisterChatCommand("rphelper", scriptmenu)
   if settings.options.startmessage then
     sampAddChatMessage((thisScript().name..' v'..thisScript().version..' запущен. <> by qrlk.'),
