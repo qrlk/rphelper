@@ -6,6 +6,7 @@ script_name('/rphelper')
 script_version("07.07.2019")
 script_author("qrlk")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
+script_url("https://github.com/qrlk/rphelper")
 --------------------------------------VAR---------------------------------------
 --цвет строк, выводимых скриптом в чат
 color = 0xFFFFF
