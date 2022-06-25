@@ -3,7 +3,7 @@ require 'lib.moonloader'
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name('/rphelper')
-script_version("07.07.2019")
+script_version("25.06.2022")
 script_author("qrlk")
 script_description("Добавляет автоматическую отыгровку при некоторых действиях.")
 script_url("https://github.com/qrlk/rphelper")
