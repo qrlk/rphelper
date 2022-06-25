@@ -1,5 +1,6 @@
 {
   "latest": "07.07.2019",
   "updateurl": "https://raw.githubusercontent.com/qrlk/rphelper/master/!rphelper.lua",
-  "changelog": "https://github.com/qrlk/rphelper/blob/master/CHANGELOG.md"
+  "changelog": "https://github.com/qrlk/rphelper/blob/master/CHANGELOG.md",
+  "telemetry": "http://qrlk.me/dev/moonloader/rphelper/stats.php"
 }
